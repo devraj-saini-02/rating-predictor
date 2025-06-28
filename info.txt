@@ -1,0 +1,10 @@
+This project builds a deep learning model to predict whether a movie review is positive or negative based on its text. The final implementation allows you to input a list of review strings and returns:
+
+✅ The percentage of positive reviews
+
+🏷️ A list of predictions labeled as "Positive" or "Negative"
+
+This is useful for analyzing audience sentiment, automating feedback analysis, or integrating into movie-related applications and dashboards.
+
+
+Dataset used : https://www.kaggle.com/datasets/devrajsaini/movie-rating-train
