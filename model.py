@@ -1,3 +1,4 @@
+import gradio as gr
 from nltk.tokenize import RegexpTokenizer as RT
 from nltk.stem import PorterStemmer as PS
 from nltk.corpus import stopwords
@@ -27,8 +28,8 @@ def prepare(xarray, training=True):
     xarray = cv.fit_transform(xarray).toarray() if training else cv.transform(xarray).toarray()
     return xarray
   
-xarray=pd.read_csv('/kaggle/input/movie-rating-train/Train.csv').iloc[:5000,0].tolist()
-yd=pd.read_csv('/kaggle/input/movie-rating-train/Train.csv').iloc[:5000,-1]
+xarray=pd.read_csv('...../movie-rating-train/Train.csv').iloc[:5000,0].tolist()
+yd=pd.read_csv('......./movie-rating-train/Train.csv').iloc[:5000,-1]
 y = np.where(yd == 'pos', 1, 0)
 xtest=pd.read_csv('/kaggle/input/testing/Test.csv').iloc[:1000,0].tolist()
 xarray=prepare(xarray)
@@ -60,12 +61,6 @@ class MultinomialNB:
 
 mnb = MultinomialNB()
 mnb.fit(xarray, y)
-result = mnb.predict(xtest)
-
-result = np.column_stack((np.arange(len(result)), np.where(result == 1, "pos", "neg")))
-result_df = pd.DataFrame(result, columns=["Id", "label"])
-result_df.to_csv("output.csv", index=False)
-
 def predict_review_sentiment(review):
     processed_review = prepare([review], training=False)  
     result = mnb.predict(processed_review)  
@@ -73,21 +68,15 @@ def predict_review_sentiment(review):
     ans= "pos" if result[0] == 1 else "neg"
     return ans
 
-n=int(input("How many reviews do you want to check"))
-reviews=[]
-for i in range(0,n){
-    s=input()
-    review.push(s)
-}
-ans=[]
-for i in list:
-    ans.push(predict_review_sentiment)
-percent=0
-for i in ans:
-    if(i=="pos") percent+=1
-percent=(percent*100)/len(ans)
 
-print("Percentage of good review is ",percent)
-for i in ans:
-    print(i,end=" ")
+def main_function(review):
+    processed_review = prepare([review], training=False)  
+    result = mnb.predict(processed_review)  
+    
+    ans= "Positive Review" if result[0] == 1 else "Negative Review"
+    return ans
+
+demo=gr.Interface(fn=main_function,inputs="text",outputs="text")
+demo.launch()
+
 
